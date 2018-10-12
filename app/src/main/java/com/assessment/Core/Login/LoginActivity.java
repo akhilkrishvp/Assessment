@@ -3,6 +3,7 @@ package com.assessment.Core.Login;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.text.Editable;
@@ -17,6 +18,7 @@ import com.assessment.Core.Home.UI.HomeActivity;
 import com.assessment.Helper.Validation;
 import com.assessment.MainActivity;
 import com.assessment.R;
+import com.github.florent37.viewtooltip.ViewTooltip;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,6 +36,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     AppCompatButton loginButton;
     @BindView(R.id.progressBar_cyclic)
     ProgressBar progressBar_cyclic;
+    private boolean isToolTipVisible = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +72,41 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void afterTextChanged(Editable s) {
                 checkButtonState();
+            }
+        });
+        editTextPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    if (!isToolTipVisible) {
+                        ViewTooltip
+                                .on(LoginActivity.this, editTextPassword)
+                                .clickToHide(true)
+                                .duration(5000)
+                                .corner(30)
+                                .arrowWidth(30)
+                                .arrowHeight(30)
+                                .padding(50, 50, 50, 50)
+                                .distanceWithView(15)
+                                .textColor(ContextCompat.getColor(LoginActivity.this, R.color.white))
+                                .color(ContextCompat.getColor(LoginActivity.this, R.color.colorPrimary))
+                                .position(ViewTooltip.Position.TOP)
+                                .text(getString(R.string.password_message))
+                                .onDisplay(new ViewTooltip.ListenerDisplay() {
+                                    @Override
+                                    public void onDisplay(View view) {
+                                        isToolTipVisible = true;
+                                    }
+                                })
+                                .onHide(new ViewTooltip.ListenerHide() {
+                                    @Override
+                                    public void onHide(View view) {
+                                        isToolTipVisible = false;
+                                    }
+                                })
+                                .show();
+                    }
+                }
             }
         });
     }
