@@ -1,6 +1,8 @@
 package com.assessment.Helper;
 
 import android.app.Activity;
+import android.content.Context;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 /**
@@ -21,11 +23,18 @@ public class Validation {
      *  Hide Keyboard
      */
     public static void hideSoftKeyboard(Activity activity) {
-        InputMethodManager inputMethodManager =
-                (InputMethodManager) activity.getSystemService(
-                        Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(
-                activity.getCurrentFocus().getWindowToken(), 0);
+        InputMethodManager inputManager = (InputMethodManager) activity.getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+        View focusedView = activity.getCurrentFocus();
+    /*
+     * If no view is focused, an NPE will be thrown
+     *
+     * Maxim Dmitriev
+     */
+        if (focusedView != null) {
+            inputManager.hideSoftInputFromWindow(focusedView.getWindowToken(),
+                    InputMethodManager.HIDE_NOT_ALWAYS);
+        }
     }
     /**
      *  Password Validation

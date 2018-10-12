@@ -7,4 +7,6 @@
     <string name="forgot_your_password">Forgot your password?</string>
     <string name="log_in">LOG IN</string>
     <string name="home">Home</string>
+    <string name="password_message">Password length should contain minimum of 8 characters and contain number, lowercase, uppercase and special character.</string>
+
 </resources>
